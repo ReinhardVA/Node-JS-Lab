@@ -4,3 +4,16 @@ body{
     margin: 0 auto;
     padding: 0 250px;
 }
+
+input{
+    border: 1px solid #cccccc;
+    padding: 8px;
+}
+
+button{
+    cursor: pointer;
+    border: 1px solid #cccccc;
+    background: #cccccc;
+    color: white;
+    padding: 8px;
+}

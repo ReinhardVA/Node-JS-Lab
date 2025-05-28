@@ -6,9 +6,11 @@ const hbs = require('hbs')
 const app = express()
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialPath = path.join(__dirname, '../templates/partials')
+const publicPath = path.join(__dirname, '../public')
 hbs.registerPartials(partialPath)
 
 app.set('views', viewsPath)
+app.use(express.static(publicPath))
 app.listen(3000, () => {
     console.log('Server is up on port 3000.')
 })
@@ -40,7 +42,7 @@ app.get('/weather', (req, res) => {
             error:'Adres girilmedi!'
         })
     } else{
-        geocode('Bursa', (error, {latitude, longitude, location} = {}) => {    
+        geocode('Bursa', (error, response, {latitude, longitude, location} = {}) => {    
         if(error){
             console.log("Error: ", error)
         }else{
@@ -62,7 +64,7 @@ app.get('/weather', (req, res) => {
                     })
                 }
             })
-    }
+        }
 })
     }
 })
