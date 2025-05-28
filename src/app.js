@@ -35,9 +35,46 @@ app.get('/about', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
+    if(!req.query.address){
+        return res.send({
+            error:'Adres girilmedi!'
+        })
+    } else{
+        geocode('Bursa', (error, {latitude, longitude, location} = {}) => {    
+        if(error){
+            console.log("Error: ", error)
+        }else{
+            console.log("Location: ", location)
+            console.log("Coordinates: ", latitude, longitude)
+            weatherstack(latitude, longitude, (error, {sicaklik, hava, feelslike} = {}) => {
+                if(error){
+                    console.log("Weather error: ", error)
+                }else{
+                    // console.log("Weather Data: ")
+                    // console.log("Sıcaklık: ", sicaklik)
+                    // console.log("Hava: ", hava)
+                    // console.log("Hissedilen: ", feelslike)
+                    res.send({
+                        location: location,
+                        sıcaklık: sicaklik,
+                        hava: hava,
+                        hissedilen: feelslike
+                    })
+                }
+            })
+    }
+})
+    }
+})
+// products?search=nodejs&rate=5 -> URL query
+app.get('/products', (req, res) =>{
+    if(!req.query.search){
+        return res.send({
+            error: 'Search terimini doldurunuz.'
+        });
+    }
     res.send({
-        location: "Turkiye",
-        sicaklik: 8
+        products: []
     })
 })
 app.get("*splat", (req, res) => {
@@ -48,22 +85,22 @@ app.get("*splat", (req, res) => {
     })
 })
 
-geocode('Bursa', (error, {latitude, longitude, location} = {}) => {
-    if(error){
-        console.log("Error: ", error)
-    }else{
-        console.log("Location: ", location)
-        console.log("Coordinates: ", latitude, longitude)
-
-        weatherstack(latitude, longitude, (error, {sicaklik, hava, feelslike} = {}) => {
-            if(error){
-                console.log("Weather error: ", error)
-            }else{
-                console.log("Weather Data: ")
-                console.log("Sıcaklık: ", sicaklik)
-                console.log("Hava: ", hava)
-                console.log("Hissedilen: ", feelslike)
-            }
-        })
-    }
-})
+// geocode('Bursa', (error, {latitude, longitude, location} = {}) => {    
+//     if(error){
+//         console.log("Error: ", error)
+//     }else{
+//         console.log("Location: ", location)
+//         console.log("Coordinates: ", latitude, longitude)
+//         data["Location"] = location;
+//         weatherstack(latitude, longitude, (error, {sicaklik, hava, feelslike} = {}) => {
+//             if(error){
+//                 console.log("Weather error: ", error)
+//             }else{
+//                 console.log("Weather Data: ")
+//                 console.log("Sıcaklık: ", sicaklik)
+//                 console.log("Hava: ", hava)
+//                 console.log("Hissedilen: ", feelslike)
+//             }
+//         })
+//     }
+// })
